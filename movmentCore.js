@@ -2,8 +2,9 @@
 var MFX = {
     config:{
         speed:{
-            max:250,
-            acc:10,
+            max:250, //max speed (obviuos i guess)
+            acc:10, //acceleration
+            dec:10, //percent of acc
         }
     },
 
@@ -34,9 +35,13 @@ var MFX = {
         const  iputs = ["KeyW","KeyA","KeyS","KeyD"]
         var input_table = []
 
-
         for(i=0;i<inputs.length;i++){
             input_table.push(localStorage.getItem(inputs[i]))
+            if(localStorage.getItem(inputs[i])==true){
+                if(i<2){
+
+                }
+            }
         }
         
         for(i=0;i<document.getElementsByClassName('mfx_player').length;i++){
