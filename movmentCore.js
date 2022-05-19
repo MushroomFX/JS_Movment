@@ -3,8 +3,8 @@ var MFX = {
     config:{
         speed:{
             max:250, //max speed (obviuos i guess)
-            acc:10, //acceleration
-            dec:10, //percent of acc
+            acc:5, //acceleration
+            dec:3, //deceleration
         },
         inputs:["KeyW","KeyD","KeyS","KeyA"]
     },
@@ -29,7 +29,6 @@ var MFX = {
         function KeyUp(e) {
             localStorage.setItem(e.code, "false");
             localStorage.setItem("last", e.code);
-            console.log(e.code)
         }
         var timeout = setTimeout(function(){
             const inputs = MFX.config.inputs
@@ -53,7 +52,7 @@ var MFX = {
                     localStorage.setItem(temp,tempVal+MFX.config.speed.acc)
                 }
             } else if(ls(temp)>0){
-                localStorage.setItem(temp,tempVal-MFX.config.speed.acc)
+                localStorage.setItem(temp,tempVal-MFX.config.speed.dec)
             }
 
             if(ls(temp)>MFX.config.speed.max){
@@ -62,13 +61,15 @@ var MFX = {
             if(ls(temp)<0){
                 localStorage.setItem(temp,0)
             }
-            console.log(tempVal,temp)
+            // console.log(tempVal,temp)
         }
-        var x = ls("MoveKeyW") - ls("MoveKeyS")
-        var y = ls("MoveKeyD") - ls("MoveKeyA")
+        var vel_x = ls("MoveKeyW") - ls("MoveKeyS")
+        var vel_y = ls("MoveKeyD") - ls("MoveKeyA")
         for(i=0;i<document.getElementsByClassName('mfx_player').length;i++){
-            document.getElementsByClassName('mfx_player')[i].value = [x,y]
+            document.getElementsByClassName('mfx_player')[i].value = ["x",{x:vel_x,y:vel_y}]
+            console.log(document.getElementsByClassName('mfx_player')[i].value[1])
         }
     },10),
 }
 MFX.init()
+
