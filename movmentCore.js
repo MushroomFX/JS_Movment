@@ -32,19 +32,37 @@ var MFX = {
         }
     },
     updateLoop: setInterval(function(){
-        const  iputs = ["KeyW","KeyA","KeyS","KeyD"]
-        var input_table = []
+        function ls(storage){
+            return localStorage.getItem(storage)
+        }
+        const  inputs = ["KeyW","KeyD","KeyS","KeyA"]
 
         for(i=0;i<inputs.length;i++){
-            input_table.push(localStorage.getItem(inputs[i]))
-            if(localStorage.getItem(inputs[i])==true){
-                if(i<2){
-
+            var temp = `Move${inputs[i]}`
+            var tempVal = ls(temp) * 1
+            if(ls(inputs[i])=="true"){
+                if(tempVal<MFX.config.max){
+                    localStorage.setItem(temp,ls(temp)+MFX.config.acc)
                 }
+            } else if(ls(temp)>0){
+                localStorage.setItem(temp,ls(temp)-MFX.config.acc)
             }
+
+            if(ls(temp)>MFX.config.max){
+                localStorage.setItem(temp,MFX.config.max)
+            }
+            if(ls(temp)<0){
+                localStorage.setItem(temp,0)
+            }
+            console.log(tempVal,ls(temp))
         }
-        
+
+        if(ls("KeyW")=="true"){
+            x += MFX.config.acc
+        }
+
         for(i=0;i<document.getElementsByClassName('mfx_player').length;i++){
+
         }
     },1),
 }

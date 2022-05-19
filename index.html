@@ -7,12 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <div class="test">test</div>
 </body>
 <style>
-
+    .test{
+        background: black;
+        padding: 1em;
+    }
 </style>
 <script src="movmentCore.js">
-    
+    MFX.player.set(document.getElementsByClassName('test')[0])
 </script>
 </html>
