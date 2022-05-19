@@ -5,7 +5,8 @@ var MFX = {
             max:250, //max speed (obviuos i guess)
             acc:10, //acceleration
             dec:10, //percent of acc
-        }
+        },
+        inputs:["KeyW","KeyD","KeyS","KeyA"]
     },
 
     player:{
@@ -30,40 +31,44 @@ var MFX = {
             localStorage.setItem("last", e.code);
             console.log(e.code)
         }
+        var timeout = setTimeout(function(){
+            const inputs = MFX.config.inputs
+            for(i=0;i<inputs.length;i++){
+                var temp = `Move${inputs[i]}`
+                localStorage.setItem(temp,10)
+            }
+        },100)
     },
     updateLoop: setInterval(function(){
         function ls(storage){
             return localStorage.getItem(storage)
         }
-        const  inputs = ["KeyW","KeyD","KeyS","KeyA"]
+        const inputs = MFX.config.inputs
 
         for(i=0;i<inputs.length;i++){
             var temp = `Move${inputs[i]}`
             var tempVal = ls(temp) * 1
             if(ls(inputs[i])=="true"){
-                if(tempVal<MFX.config.max){
-                    localStorage.setItem(temp,ls(temp)+MFX.config.acc)
+                if(tempVal<MFX.config.speed.max){
+                    localStorage.setItem(temp,tempVal+MFX.config.speed.acc)
                 }
             } else if(ls(temp)>0){
-                localStorage.setItem(temp,ls(temp)-MFX.config.acc)
+                localStorage.setItem(temp,tempVal-MFX.config.speed.acc)
             }
 
-            if(ls(temp)>MFX.config.max){
-                localStorage.setItem(temp,MFX.config.max)
+            if(ls(temp)>MFX.config.speed.max){
+                localStorage.setItem(temp,MFX.config.speed.acc)
             }
             if(ls(temp)<0){
                 localStorage.setItem(temp,0)
             }
-            console.log(tempVal,ls(temp))
+            console.log(tempVal,temp)
         }
-
-        if(ls("KeyW")=="true"){
-            x += MFX.config.acc
-        }
-
+        var x = ls("MoveKeyW") - ls("MoveKeyS")
+        var y = ls("MoveKeyD") - ls("MoveKeyA")
         for(i=0;i<document.getElementsByClassName('mfx_player').length;i++){
-
+            document.getElementsByClassName('mfx_player')[i].value = [x,y]
         }
-    },1),
+    },10),
 }
 MFX.init()
